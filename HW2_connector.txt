@@ -25,3 +25,63 @@ function doPost(e) {
 }
 
 //Google Sheets'te Uzantılar > Apps Script > Kaydet
+
+// Connector with real AI API Kaydet
+
+// DİKKAT: Buraya kopyaladığın API anahtarını tırnak içine yapıştır!
+const GEMINI_API_KEY = "BURAYA_ALDIĞIN_API_KEYİ_YAPIŞTIR";
+
+function doPost(e) {
+  try {
+    const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+    const data = JSON.parse(e.postData.contents);
+    const userMessage = data.message;
+
+    // --- GERÇEK AI ÇAĞRISI (Gemini API) ---
+    const aiSummary = callGeminiAI(userMessage);
+
+    // Verileri tabloya yazma sırası
+    sheet.appendRow([
+      data.name,       
+      data.email,      
+      userMessage,    
+      aiSummary,       
+      new Date()       
+    ]);
+    
+    return ContentService.createTextOutput(JSON.stringify({ "status": "success" }))
+      .setMimeType(ContentService.MimeType.JSON);
+      
+  } catch (error) {
+    return ContentService.createTextOutput(JSON.stringify({ "status": "error", "message": error.toString() }))
+      .setMimeType(ContentService.MimeType.JSON);
+  }
+}
+
+// Gemini API'yi çağıran yardımcı fonksiyon
+function callGeminiAI(text) {
+  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`;
+  
+  const payload = {
+    "contents": [{
+      "parts": [{
+        "text": `Aşağıdaki mesajı tek bir kısa cümlede özetle ve sadece özeti döndür: "${text}"`
+      }]
+    }]
+  };
+
+  const options = {
+    "method": "post",
+    "contentType": "application/json",
+    "payload": JSON.stringify(payload),
+    "muteHttpExceptions": true
+  };
+
+  try {
+    const response = UrlFetchApp.fetch(url, options);
+    const result = JSON.parse(response.getContentText());
+    return result.candidates[0].content.parts[0].text.trim();
+  } catch (e) {
+    return "Özet oluşturulamadı (AI Hatası)";
+  }
+}
