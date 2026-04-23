@@ -1,0 +1,27 @@
+function doPost(e) {
+  try {
+    const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+    const data = JSON.parse(e.postData.contents);
+    
+    // Basit AI Özeti Simülasyonu
+    const aiSummary = data.message.split(" ").slice(0, 10).join(" ") + "... [AI Generated Summary]";
+
+    // Verileri tabloya yazma sırası
+    sheet.appendRow([
+      data.name,       
+      data.email,      
+      data.message,    
+      aiSummary,       
+      new Date()       
+    ]);
+    
+    return ContentService.createTextOutput(JSON.stringify({ "status": "success" }))
+      .setMimeType(ContentService.MimeType.JSON);
+      
+  } catch (error) {
+    return ContentService.createTextOutput(JSON.stringify({ "status": "error", "message": error.toString() }))
+      .setMimeType(ContentService.MimeType.JSON);
+  }
+}
+
+//Google Sheets'te Uzantılar > Apps Script > Kaydet
