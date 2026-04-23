@@ -14,7 +14,7 @@ document.getElementById('leadForm').addEventListener('submit', async (e) => {
         message: document.getElementById('message').value
     };
 
-    status.innerText = "Gönderiliyor... 🚀";
+    status.innerText = "Sending... 🚀";
     status.style.color = "#007bff";
     submitBtn.disabled = true;
 
@@ -24,13 +24,13 @@ document.getElementById('leadForm').addEventListener('submit', async (e) => {
             body: JSON.stringify(formData) // Google Sheets'e gönderim
         });
 
-        status.innerText = "✅ Başarıyla gönderildi! Google Sheets'i kontrol edebilirsiniz.";
+        status.innerText = "✅ Successfully sent! You can check Google Sheets.";
         status.style.color = "#28a745";
         document.getElementById('leadForm').reset();
     } catch (error) {
-        status.innerText = "⚠️ Bağlantı hatası! İnternetinizi kontrol edin.";
+        status.innerText = "⚠️ Connection error!";
         status.style.color = "#dc3545";
-        console.error('Hata:', error);
+        console.error('Error:', error);
     } finally {
         submitBtn.disabled = false;
     }
