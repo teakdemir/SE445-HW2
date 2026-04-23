@@ -5,7 +5,7 @@ document.getElementById('leadForm').addEventListener('submit', async (e) => {
     const submitBtn = e.target.querySelector('button');
 
     // Yeni gizli mail hesabınla oluşturduğun GÜNCEL URL (Uyumlu ✅)
-    const ANTIGRAVITY_ENDPOINT = "https://script.google.com/macros/s/AKfycbyaI-Aqgb9pqa5Bdg3uHemk7yNfnjQvaM9UO0Z6H7ILY-6coDobxO2sUpNvk0M1O1wd/exec";
+    const ANTIGRAVITY_ENDPOINT = "https://script.google.com/macros/s/AKfycbxWw0tIKW98XHZslIDRinM0DwYO5GuDBBpMeujGCbY7-OIo7aBujZooRTQ_4URQ8A3Y/exec";
 
     // HTML'deki ID'lerden verileri toplama (Uyumlu ✅)
     const formData = {
