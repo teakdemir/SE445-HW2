@@ -31,7 +31,6 @@ textarea {
     border: 1px solid #ddd;
     border-radius: 5px;
     box-sizing: border-box;
-    /* Padding'in genişliği bozmasını engeller */
     font-size: 14px;
 }
 
